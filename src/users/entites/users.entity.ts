@@ -15,6 +15,9 @@ export class Users {
   @Column('varchar', { name: 'password', length: 100, select: false })
   password: string;
 
+  @Column('varchar', { name: 'photoUrl', length: 100, nullable: true })
+  photoUrl: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
