@@ -1,6 +1,15 @@
-import { Body, Controller, ForbiddenException, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { JoinRequestDto } from './dtos/join.request.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -14,5 +23,11 @@ export class UsersController {
     } else {
       throw new ForbiddenException();
     }
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  me(@Req() req) {
+    return { data: req.user };
   }
 }
