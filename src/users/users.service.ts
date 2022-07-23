@@ -47,7 +47,7 @@ export class UsersService {
       select: ['userId', 'loginId', 'password', 'nickname'],
     });
     if (!user) {
-      throw new NotFoundException('없는 회원입니다.');
+      throw new NotFoundException('존재 하지 않는 관리자입니다.');
     }
     return user;
   }
