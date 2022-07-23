@@ -1,33 +1,28 @@
-import {
-  Body,
-  Controller,
-  ForbiddenException,
-  Get,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { JoinRequestDto } from './dtos/join.request.dto';
 import { UsersService } from './users.service';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { responseError } from '../tools/reseponse-error.tools';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
   @Post('join')
   async create(@Body() { loginId, password, nickname }: JoinRequestDto) {
-    const user = await this.userService.join(loginId, password, nickname);
+    try {
+      const user = await this.userService.join(loginId, password, nickname);
 
-    if (user) {
-      return { message: 'success' };
-    } else {
-      throw new ForbiddenException();
+      if (user) {
+        return { message: 'SUCCESS', user };
+      }
+    } catch (e) {
+      responseError(e);
     }
   }
 
   @Get('me')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   me(@Req() req) {
-    return { data: req.user };
+    return { message: 'SUCCESS', user: req.user };
   }
 }

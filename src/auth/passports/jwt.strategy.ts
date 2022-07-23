@@ -9,7 +9,7 @@ const fromAuthHeader = () => {
     let token = null;
     if (request && request.headers) {
       const authHeaders: string = request.headers['authorization'];
-      if (authHeaders.split(' ')[1]) {
+      if (authHeaders && authHeaders.split(' ')[1]) {
         token = authHeaders.split(' ')[1];
       }
     }

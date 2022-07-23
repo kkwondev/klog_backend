@@ -22,25 +22,19 @@ export class UsersService {
    * @param nickname
    */
   async join(loginId: string, password: string, nickname: string) {
-    try {
-      const isLoginId = await this.usersRepository.findOne({
-        where: { loginId },
-      });
-      console.log(isLoginId);
-      if (isLoginId) {
-        throw new ForbiddenException(`${loginId} 이미 존재하는 아이디입니다.`);
-      }
-
-      const hashPassword = await bcrypt.hash(password, 12);
-
-      return await this.usersRepository.save({
-        loginId,
-        password: hashPassword,
-        nickname,
-      });
-    } catch (e) {
-      throw e;
+    const isLoginId = await this.usersRepository.findOne({
+      where: { loginId },
+    });
+    if (isLoginId) {
+      throw new ForbiddenException(`${loginId} 이미 존재하는 아이디입니다.`);
     }
+    const hashPassword = await bcrypt.hash(password, 12);
+
+    return await this.usersRepository.save({
+      loginId,
+      password: hashPassword,
+      nickname,
+    });
   }
 
   /**

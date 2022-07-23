@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { Users } from './users/entites/users.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { CategoriesModule } from './categories/categories.module';
+import { Categorires } from './categories/entities/categories.entity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       logging: true,
-      entities: [Users], // Entity 연결
+      entities: [Users, Categorires], // Entity 연결
       migrations: [__dirname + '/src/migrations/*.ts'],
       autoLoadEntities: true,
       charset: 'utf8mb4',
@@ -26,6 +28,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [AppService],
